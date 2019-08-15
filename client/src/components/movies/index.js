@@ -3,13 +3,13 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 
 function MovieIndex() {
-  const [blogs, setBlogs] = useState([]);
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     Axios.get("/api/movies")
       .then(result => {
         console.log("index result", result);
-        setBlogs(result.data);
+        setMovies(result.data);
       })
       .catch(err => console.error(err));
   }, []);
@@ -33,17 +33,17 @@ function MovieIndex() {
           </thead>
 
           <tbody>
-            {blogs.map(blog => (
-              <tr key={blog._id}>
+            {movies.map(movie => (
+              <tr key={movie._id}>
                 <td>
-                  <Link to={`/${blog._id}`}>{blog.title}</Link>
+                  <Link to={`/${movie._id}`}>{movie.title}</Link>
                 </td>
-                <td>{blog.description}</td>
-                <td>{blog.price}</td>
-                <td>{blog.rating}</td>
+                <td>{movie.description}</td>
+                <td>{movie.price}</td>
+                <td>{movie.rating}</td>
                 <td>
-                  <Link to={`/${blog._id}/edit`}>edit</Link>|
-                  <Link to={`/${blog._id}/destroy`}>delete</Link>
+                  <Link to={`/${movie._id}/edit`}>edit</Link>|
+                  <Link to={`/${movie._id}/destroy`}>delete</Link>
                 </td>
               </tr>
             ))}
