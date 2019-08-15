@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import Axios from "axios";
+import NotificationContext from "../notification_context";
 
 function New() {
   const [inputs, setInputs] = useState({});
   const [redirect, setRedirect] = useState(false);
+  const { setNotification } = useContext(NotificationContext);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -15,7 +17,18 @@ function New() {
       price: inputs.price,
       rating: inputs.rating
     })
-      .then(resp => setRedirect(true))
+      .then(resp => {
+        setNotification(notificatoin => {
+          return {
+            ...notificatoin,
+            status: "success",
+            message: "The new movie has been created"
+          };
+        });
+        console.log(resp);
+
+        setRedirect(true);
+      })
       .catch(err => console.log(err));
   }
 

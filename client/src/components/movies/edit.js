@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import Axios from "axios";
+import NotificationContext from "../notification_context";
 
 function MovieEdit(props) {
   const [inputs, setInputs] = useState({});
   const [redirect, setRedirect] = useState(false);
+  const { setNotification } = useContext(NotificationContext);
 
   console.log("edit props", props);
 
@@ -28,7 +30,17 @@ function MovieEdit(props) {
       price: inputs.price,
       rating: inputs.rating
     })
-      .then(resp => setRedirect(true))
+      .then(resp => {
+        setNotification(notificatoin => {
+          return {
+            ...notificatoin,
+            status: "success",
+            message: "The movie data has been updated"
+          };
+        });
+        console.log(resp);
+        setRedirect(true);
+      })
       .catch(err => console.error(err));
   }
 
@@ -93,7 +105,7 @@ function MovieEdit(props) {
               name="rating"
               required="required"
               onChange={handleInputChange}
-              defaultValue={inputs.rating}
+              value={inputs.rating}
             >
               <option value="1">1</option>
               <option value="2">2</option>
